@@ -45,7 +45,7 @@ Users → Route 53 → CloudFront (HTTPS via ACM) → S3 Bucket (static site)
 
 5. Save and deploy — note your CloudFront distribution domain name.
 
-### 5. Configure Route 53
+### 4. Configure Route 53
 
 1. In Route 53 → Hosted zones → Select your domain.
 
