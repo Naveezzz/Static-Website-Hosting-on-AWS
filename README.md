@@ -1,4 +1,3 @@
-# Static-Website-Hosting-on-AWS
 # 🚀 Static Website Hosting on AWS with S3, CloudFront, Route 53, and ACM
 
 This project demonstrates how to host a secure static website on AWS using the following services:
