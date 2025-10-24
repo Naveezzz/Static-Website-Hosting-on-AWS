@@ -23,27 +23,34 @@ Users → Route 53 → CloudFront (HTTPS via ACM) → S3 Bucket (static site)
 3. Disable **Block all public access** (since CloudFront will control access).
 4. Enable **Static website hosting** and upload your site files (`index.html`, `error.html`, etc.).
 
-### 2. Configure the Bucket Policy
-Attach the following **bucket policy** (replace `YOUR_BUCKET_NAME` and `YOUR_CLOUDFRONT_ID`):
+### 3. Request an SSL Certificate
 
-```json
-{
-  "Version": "2012-10-17",
-  "Id": "PolicyForCloudFrontPrivateContent",
-  "Statement": [
-    {
-      "Sid": "GrantCloudFrontAccess",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudfront.amazonaws.com"
-      },
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*",
-      "Condition": {
-        "StringEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::YOUR_AWS_ACCOUNT_ID:distribution/YOUR_CLOUDFRONT_ID"
-        }
-      }
-    }
-  ]
-}
+Go to **AWS Certificate Manager (ACM)** → Request a public certificate.
+
+Enter your domain (e.g., mywebsite.com, www.mywebsite.com).
+
+Validate via DNS (Route 53 can automate this).
+
+Wait until the status shows “Issued”.
+
+### 4. Create a CloudFront Distribution
+
+Origin domain → Select your S3 bucket (not website endpoint).
+
+Viewer protocol policy → Redirect HTTP to HTTPS.
+
+Add your ACM certificate (must be in us-east-1 for CloudFront).
+
+Cache policy → Use Managed-CachingOptimized.
+
+Save and deploy — note your CloudFront distribution domain name.
+
+### 5. Configure Route 53
+
+In Route 53 → Hosted zones → Select your domain.
+
+Add a **CNAME or ALIAS** record:
+
+Name: @ (root domain)
+
+Alias to: CloudFront distribution domain name.
