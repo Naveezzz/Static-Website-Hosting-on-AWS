@@ -55,4 +55,19 @@ Users → Route 53 → CloudFront (HTTPS via ACM) → S3 Bucket (static site)
 
 4. Alias to: CloudFront distribution domain name.
 
+```json
+   {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::naveezzz.shop/*"
+        }
+    ]
+}
+
+```
 <img width="1369" height="627" alt="Screenshot (700)" src="https://github.com/user-attachments/assets/70159409-4f5c-4412-aaf0-8fecaa5d74fa" />
